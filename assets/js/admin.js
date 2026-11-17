@@ -1,221 +1,40 @@
 (() => {
-        'use strict';
-        const $ = (s, r = document) => r.querySelector(s);
-        const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-        const esc = s => String(s ? ? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-        const safeUrl = u => { const s = String(u || ''); if (s.startsWith('/') && !s.startsWith('//')) return s; try { let x = new URL(s); return ['https:', 'http:'].includes(x.protocol) ? x.href : '' } catch { return '' } };
-        const slugify = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        const artistUrlSlug = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const TYPES = {
-            artist_type: [
-                ['humano', 'Artista'],
-                ['personaje', 'Personaje'],
-                ['ia', 'Proyecto IA'],
-                ['grupo', 'Grupo'],
-                ['otro', 'Otro']
-            ],
-            release_type: [
-                ['single', 'Sencillo'],
-                ['ep', 'EP'],
-                ['album', 'Álbum'],
-                ['compilacion', 'Recopilación'],
-                ['mixtape', 'Mixtape'],
-                ['otro', 'Otro']
-            ],
-            category: [
-                ['noticia', 'Noticia'],
-                ['comunicado', 'Comunicado'],
-                ['lanzamiento', 'Lanzamiento'],
-                ['artista', 'Artista'],
-                ['otro', 'Otro']
-            ],
-            credit_role: [
-                ['principal', 'Principal'],
-                ['colaborador', 'Colaborador'],
-                ['invitado', 'Invitado'],
-                ['productor', 'Productor'],
-                ['otro', 'Otro']
-            ],
-            role: [
-                ['editor', 'Editor'],
-                ['admin', 'Administrador'],
-                ['owner', 'Propietario']
-            ],
-            status: [
-                ['pending', 'Pendiente'],
-                ['active', 'Activo'],
-                ['unsubscribed', 'Desuscripto']
-            ]
-        };
-        const FIELD = {
-            artists: [
-                ['name', 'Nombre artístico', 'text', 1],
-                ['artist_type', 'Tipo de artista', 'select'],
-                ['tagline', 'Etiqueta / titular', 'text'],
-                ['short_bio', 'Presentación breve', 'area'],
-                ['biography', 'Biografía completa', 'long'],
-                ['country', 'País', 'text'],
-                ['avatar_url', 'Imagen del artista', 'media'],
-                ['banner_url', 'Banner del perfil', 'media'],
-                ['featured', 'Destacado en portada', 'bool'],
-                ['is_published', 'Perfil publicado', 'bool'],
-                ['sort_order', 'Orden', 'number']
-            ],
-            releases: [
-                ['title', 'Título del lanzamiento', 'text', 1],
-                ['slug', 'Slug interno', 'text'],
-                ['release_type', 'Tipo', 'select'],
-                ['released_on', 'Fecha de lanzamiento (AAAA-MM-DD)', 'text'],
-                ['release_year', 'Año', 'number'],
-                ['description', 'Descripción', 'area'],
-                ['credits_note', 'Notas de créditos', 'area'],
-                ['cover_url', 'Portada', 'media'],
-                ['gallery_urls', 'Otras imágenes del lanzamiento (una URL por línea)', 'list'],
-                ['spotify_url', 'Enlace de Spotify', 'text'],
-                ['apple_music_url', 'Enlace de Apple Music', 'text'],
-                ['external_url', 'Otro enlace de escucha', 'text'],
-                ['catalog_number', 'N.º de catálogo (opcional)', 'text'],
-                ['upc', 'UPC (opcional)', 'text'],
-                ['is_published', 'Publicado', 'bool'],
-                ['featured', 'Destacado', 'bool'],
-                ['sort_order', 'Orden', 'number']
-            ],
-            tracks: [
-                ['track_number', 'Número de canción', 'number', 1],
-                ['disc_number', 'Número de disco', 'number'],
-                ['title', 'Título de la canción', 'text', 1],
-                ['artwork_url', 'Portada individual de la canción', 'media'],
-                ['duration_seconds', 'Duración en segundos', 'number'],
-                ['isrc', 'ISRC', 'text'],
-                ['spotify_url', 'Enlace Spotify', 'text'],
-                ['apple_music_url', 'Enlace Apple Music', 'text'],
-                ['external_url', 'Enlace alternativo', 'text'],
-                ['is_explicit', 'Contenido explícito', 'bool']
-            ],
-            news: [
-                ['title', 'Título', 'text', 1],
-                ['slug', 'Slug', 'text'],
-                ['category', 'Categoría', 'select'],
-                ['excerpt', 'Resumen', 'area'],
-                ['body_markdown', 'Contenido en Markdown (sin HTML)', 'long'],
-                ['cover_url', 'Portada', 'media'],
-                ['published_at', 'Fecha de publicación (AAAA-MM-DD HH:MM)', 'text'],
-                ['is_published', 'Visible públicamente', 'bool']
-            ],
-            links: [
-                ['artist_id', 'Artista', 'artist'],
-                ['platform', 'Plataforma (Spotify, etc.)', 'text', 1],
-                ['label', 'Texto visible', 'text'],
-                ['url', 'URL https://', 'text', 1],
-                ['sort_order', 'Orden', 'number'],
-                ['is_public', 'Enlace público', 'bool']
-            ],
-            pages: [
-                ['title', 'Título', 'text', 1],
-                ['subtitle', 'Bajada', 'area'],
-                ['body_markdown', 'Historia / contenido Markdown', 'long'],
-                ['hero_image_url', 'Imagen principal', 'media'],
-                ['is_published', 'Página publicada', 'bool']
-            ],
-            team: [
-                ['user_id', 'UUID de Supabase Auth (creá la cuenta en Authentication)', 'text', 1],
-                ['display_name', 'Nombre visible', 'text'],
-                ['role', 'Rol de acceso', 'select']
-            ]
-        };
-        const DEFAULTS = { artists: { artist_type: 'humano', is_published: false, featured: false, sort_order: 0 }, releases: { release_type: 'single', is_published: false, featured: false, sort_order: 0 }, tracks: { track_number: 1, disc_number: 1, is_explicit: false }, news: { category: 'noticia', is_published: false }, links: { sort_order: 0, is_public: true }, pages: { is_published: true }, team: { role: 'editor' } };
-        const TABLE = { artists: 'tl_artists', releases: 'tl_releases', tracks: 'tl_tracks', news: 'tl_news', links: 'tl_artist_links', pages: 'tl_pages', team: 'tl_admins' };
-        const NAV = [
-            ['dashboard', '⌂', 'Inicio'],
-            ['artists', '◉', 'Artistas'],
-            ['releases', '◈', 'Nuevos lanzamientos'],
-            ['tracks', '≡', 'Canciones'],
-            ['links', '↗', 'Perfiles y enlaces'],
-            ['news', '✳', 'Noticias'],
-            ['pages', '¶', 'Historia'],
-            ['media', '▣', 'Multimedia'],
-            ['settings', '⚙', 'Web y plataformas'],
-            ['newsletter', '✉', 'Newsletter'],
-            ['team', '♟', 'Equipo']
-        ];
-        const cfg = window.TL_CONFIG || {};
-        let sb, user, role = 'editor',
-            view = 'dashboard',
-            editor = null,
-            filterRelease = '',
-            artistCache = [],
-            releaseCache = [],
-            listCache = [],
-            pendingConfirm = null,
-            fileForField = null,
-            toastTimeout;
-
-        function notify(msg, error = false) {
-            const n = $('#toast');
-            n.textContent = msg;
-            n.classList.remove('hidden');
-            n.classList.toggle('error', error);
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => n.classList.add('hidden'), 4800)
-        }
-
-        function messageError(e) {
-            notify(e ? .message || String(e), true);
-            console.error(e)
-        }
-
-        function configured() { return cfg.SUPABASE_URL && !cfg.SUPABASE_URL.includes('TU-PROYECTO') && cfg.SUPABASE_ANON_KEY && !cfg.SUPABASE_ANON_KEY.includes('TU_ANON') }
-        async function query(table, opts = {}) { let q = sb.from(table).select('*'); if (opts.eq) q = q.eq(opts.eq[0], opts.eq[1]); if (opts.order) q = q.order(opts.order, { ascending: opts.asc ? ? true }); let { data, error } = await q; if (error) throw error; return data || [] }
-        async function loadCaches() {
-            [artistCache, releaseCache] = await Promise.all([query('tl_artists', { order: 'name' }), query('tl_releases', { order: 'created_at', asc: false })])
-        }
-        const aName = id => artistCache.find(a => a.id === id) ? .name || 'Sin artista';
-        const rName = id => releaseCache.find(r => r.id === id) ? .title || 'Sin lanzamiento';
-
-        function visibleForNav(v) { if (['newsletter', 'settings'].includes(v)) return role === 'owner' || role === 'admin'; if (v === 'team') return role === 'owner'; return true }
-
-        function activate(viewName) {
-            view = viewName;
-            $$('[data-nav]').forEach(el => el.classList.toggle('active', el.dataset.nav === view));
-            $('#crumb').textContent = NAV.find(x => x[0] === view) ? .[2] || 'PANEL';
-            loadView().catch(messageError)
-        }
-
-        function displayShell() {
-            $('#login-screen').classList.add('hidden');
-            $('#shell').classList.remove('hidden');
-            $('#role-badge').textContent = role;
-            $('#user-email').textContent = user.email || '';
-            $('#sidebar-nav').innerHTML = NAV.filter(([v]) => visibleForNav(v)).map(([v, symbol, name]) => `<button class="menu-item" type="button" data-nav="${v}"><span class="symbol">${symbol}</span>${esc(name)}</button>`).join('');
-            $$('[data-nav]').forEach(n => n.addEventListener('click', () => activate(n.dataset.nav)))
-        }
-        async function authenticate() {
-            const { data, error } = await sb.auth.getUser();
-            if (error || !data.user) {
-                $('#shell').classList.add('hidden');
-                $('#login-screen').classList.remove('hidden');
-                return
-            }
-            const me = data.user;
-            const { data: member, error: permissionError } = await sb.from('tl_admins').select('user_id,role,display_name').eq('user_id', me.id).maybeSingle();
-            if (permissionError) throw permissionError;
-            if (!member) {
-                await sb.auth.signOut();
-                $('#login-error').textContent = 'Tu cuenta existe, pero no tiene permiso en tl_admins. Asigná owner desde el SQL Editor.';
-                return
-            }
-            user = me;
-            role = member.role;
-            displayShell();
-            await loadCaches();
-            activate('dashboard')
-        }
-
-        function pageHead(title, subtitle, button = '') { return `<div class="title-row"><div><h1 class="page-title">${esc(title)}</h1><p class="page-subtitle">${esc(subtitle)}</p></div>${button}</div>` }
-
-        function badge(p) { return p ? '<span class="pill active">Publicado</span>' : '<span class="pill draft">Borrador</span>' }
-
-        function actions(item, kind) { return `<div class="table-actions"><button type="button" class="tiny" data-edit="${esc(item.id||item.user_id||item.key)}" data-kind="${kind}">Editar</button>${kind==='releases'?`<button class="tiny" data-go-tracks="${esc(item.id)}">Temas</button>`:''}<button type="button" class="tiny red" data-delete="${esc(item.id||item.user_id)}" data-kind="${kind}">Eliminar</button></div>`}
+'use strict';
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>{const s=String(u||'');if(s.startsWith('/')&&!s.startsWith('//'))return s;try{let x=new URL(s);return ['https:','http:'].includes(x.protocol)?x.href:''}catch{return ''}};
+const slugify=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const artistUrlSlug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const TYPES={artist_type:[['humano','Artista'],['personaje','Personaje'],['ia','Proyecto IA'],['grupo','Grupo'],['otro','Otro']],release_type:[['single','Sencillo'],['ep','EP'],['album','Álbum'],['compilacion','Recopilación'],['mixtape','Mixtape'],['otro','Otro']],category:[['noticia','Noticia'],['comunicado','Comunicado'],['lanzamiento','Lanzamiento'],['artista','Artista'],['otro','Otro']],credit_role:[['principal','Principal'],['colaborador','Colaborador'],['invitado','Invitado'],['productor','Productor'],['otro','Otro']],role:[['editor','Editor'],['admin','Administrador'],['owner','Propietario']],status:[['pending','Pendiente'],['active','Activo'],['unsubscribed','Desuscripto']]};
+const FIELD={
+ artists:[['name','Nombre artístico','text',1],['artist_type','Tipo de artista','select'],['tagline','Etiqueta / titular','text'],['short_bio','Presentación breve','area'],['biography','Biografía completa','long'],['country','País','text'],['avatar_url','Imagen del artista','media'],['banner_url','Banner del perfil','media'],['featured','Destacado en portada','bool'],['is_published','Perfil publicado','bool'],['sort_order','Orden','number']],
+ releases:[['title','Título del lanzamiento','text',1],['slug','Slug interno','text'],['release_type','Tipo','select'],['released_on','Fecha de lanzamiento (AAAA-MM-DD)','text'],['release_year','Año','number'],['description','Descripción','area'],['credits_note','Notas de créditos','area'],['cover_url','Portada','media'],['gallery_urls','Otras imágenes del lanzamiento (una URL por línea)','list'],['spotify_url','Enlace de Spotify','text'],['apple_music_url','Enlace de Apple Music','text'],['external_url','Otro enlace de escucha','text'],['catalog_number','N.º de catálogo (opcional)','text'],['upc','UPC (opcional)','text'],['is_published','Publicado','bool'],['featured','Destacado','bool'],['sort_order','Orden','number']],
+ tracks:[['track_number','Número de canción','number',1],['disc_number','Número de disco','number'],['title','Título de la canción','text',1],['artwork_url','Portada individual de la canción','media'],['duration_seconds','Duración en segundos','number'],['isrc','ISRC','text'],['spotify_url','Enlace Spotify','text'],['apple_music_url','Enlace Apple Music','text'],['external_url','Enlace alternativo','text'],['is_explicit','Contenido explícito','bool']],
+ news:[['title','Título','text',1],['slug','Slug','text'],['category','Categoría','select'],['excerpt','Resumen','area'],['body_markdown','Contenido en Markdown (sin HTML)','long'],['cover_url','Portada','media'],['published_at','Fecha de publicación (AAAA-MM-DD HH:MM)','text'],['is_published','Visible públicamente','bool']],
+ links:[['artist_id','Artista','artist'],['platform','Plataforma (Spotify, etc.)','text',1],['label','Texto visible','text'],['url','URL https://','text',1],['sort_order','Orden','number'],['is_public','Enlace público','bool']],
+ pages:[['title','Título','text',1],['subtitle','Bajada','area'],['body_markdown','Historia / contenido Markdown','long'],['hero_image_url','Imagen principal','media'],['is_published','Página publicada','bool']],
+ team:[['user_id','UUID de Supabase Auth (creá la cuenta en Authentication)','text',1],['display_name','Nombre visible','text'],['role','Rol de acceso','select']]
+};
+const DEFAULTS={artists:{artist_type:'humano',is_published:false,featured:false,sort_order:0},releases:{release_type:'single',is_published:false,featured:false,sort_order:0},tracks:{track_number:1,disc_number:1,is_explicit:false},news:{category:'noticia',is_published:false},links:{sort_order:0,is_public:true},pages:{is_published:true},team:{role:'editor'}};
+const TABLE={artists:'tl_artists',releases:'tl_releases',tracks:'tl_tracks',news:'tl_news',links:'tl_artist_links',pages:'tl_pages',team:'tl_admins'};
+const NAV=[['dashboard','⌂','Inicio'],['artists','◉','Artistas'],['releases','◈','Nuevos lanzamientos'],['tracks','≡','Canciones'],['links','↗','Perfiles y enlaces'],['news','✳','Noticias'],['pages','¶','Historia'],['media','▣','Multimedia'],['settings','⚙','Web y plataformas'],['newsletter','✉','Newsletter'],['team','♟','Equipo']];
+const cfg=window.TL_CONFIG||{};
+let sb,user,role='editor',view='dashboard',editor=null,filterRelease='',artistCache=[],releaseCache=[],listCache=[],pendingConfirm=null,fileForField=null,toastTimeout;
+function notify(msg,error=false){const n=$('#toast');n.textContent=msg;n.classList.remove('hidden');n.classList.toggle('error',error);clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>n.classList.add('hidden'),4800)}
+function messageError(e){notify(e?.message||String(e),true);console.error(e)}
+function configured(){return cfg.SUPABASE_URL&&!cfg.SUPABASE_URL.includes('TU-PROYECTO')&&cfg.SUPABASE_ANON_KEY&&!cfg.SUPABASE_ANON_KEY.includes('TU_ANON')}
+async function query(table,opts={}){let q=sb.from(table).select('*');if(opts.eq)q=q.eq(opts.eq[0],opts.eq[1]);if(opts.order)q=q.order(opts.order,{ascending:opts.asc??true});let {data,error}=await q;if(error)throw error;return data||[]}
+async function loadCaches(){[artistCache,releaseCache]=await Promise.all([query('tl_artists',{order:'name'}),query('tl_releases',{order:'created_at',asc:false})])}
+const aName=id=>artistCache.find(a=>a.id===id)?.name||'Sin artista';
+const rName=id=>releaseCache.find(r=>r.id===id)?.title||'Sin lanzamiento';
+function visibleForNav(v){if(['newsletter','settings'].includes(v))return role==='owner'||role==='admin';if(v==='team')return role==='owner';return true}
+function activate(viewName){view=viewName;$$('[data-nav]').forEach(el=>el.classList.toggle('active',el.dataset.nav===view));$('#crumb').textContent=NAV.find(x=>x[0]===view)?.[2]||'PANEL';loadView().catch(messageError)}
+function displayShell(){ $('#login-screen').classList.add('hidden');$('#shell').classList.remove('hidden');$('#role-badge').textContent=role;$('#user-email').textContent=user.email||'';$('#sidebar-nav').innerHTML=NAV.filter(([v])=>visibleForNav(v)).map(([v,symbol,name])=>`<button class="menu-item" type="button" data-nav="${v}"><span class="symbol">${symbol}</span>${esc(name)}</button>`).join('');$$('[data-nav]').forEach(n=>n.addEventListener('click',()=>activate(n.dataset.nav)))}
+async function authenticate(){const {data,error}=await sb.auth.getUser();if(error||!data.user){$('#shell').classList.add('hidden');$('#login-screen').classList.remove('hidden');return}const me=data.user;const {data:member,error:permissionError}=await sb.from('tl_admins').select('user_id,role,display_name').eq('user_id',me.id).maybeSingle();if(permissionError)throw permissionError;if(!member){await sb.auth.signOut();$('#login-error').textContent='Tu cuenta existe, pero no tiene permiso en tl_admins. Asigná owner desde el SQL Editor.';return}user=me;role=member.role;displayShell();await loadCaches();activate('dashboard')}
+function pageHead(title,subtitle,button=''){return `<div class="title-row"><div><h1 class="page-title">${esc(title)}</h1><p class="page-subtitle">${esc(subtitle)}</p></div>${button}</div>`}
+function badge(p){return p?'<span class="pill active">Publicado</span>':'<span class="pill draft">Borrador</span>'}
+function actions(item,kind){return `<div class="table-actions"><button type="button" class="tiny" data-edit="${esc(item.id||item.user_id||item.key)}" data-kind="${kind}">Editar</button>${kind==='releases'?`<button class="tiny" data-go-tracks="${esc(item.id)}">Temas</button>`:''}<button type="button" class="tiny red" data-delete="${esc(item.id||item.user_id)}" data-kind="${kind}">Eliminar</button></div>`}
 function tables(list,kind){if(!list.length)return `<div class="dim-note">No hay registros en esta sección. Creá el primero desde el botón superior.</div>`;let rows='';if(kind==='artists')rows=list.map(x=>`<tr><td><div class="cell-title">${esc(x.name)}</div><small class="muted">/artist=${artistUrlSlug(x.name)}</small></td><td>${esc(x.artist_type)}</td><td>${badge(x.is_published)}</td><td>${actions(x,kind)}</td></tr>`).join('');
 if(kind==='releases')rows=list.map(x=>`<tr><td><div class="cell-title">${esc(x.title)}</div><small class="muted">${esc(x.slug)}</small></td><td>${esc(x.release_type)} ${esc(x.release_year||'')}</td><td>${badge(x.is_published)}</td><td>${actions(x,kind)}</td></tr>`).join('');
 if(kind==='tracks')rows=list.map(x=>`<tr><td>${esc(x.track_number)}</td><td><div class="cell-title">${esc(x.title)}</div></td><td>${esc(rName(x.release_id))}</td><td>${actions(x,kind)}</td></tr>`).join('');
