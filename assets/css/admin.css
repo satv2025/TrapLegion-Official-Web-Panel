@@ -11,18 +11,18 @@
     --acid: #d1b48a;
     --pink: #c3a18b;
     --blue: #a5c6b1;
-    --red: #e29d91
+    --red: #e29d91;
 }
 
 * {
     font-family: 'Barlow Condensed' !important;
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 :focus,
 :focus-visible {
     outline: none !important;
-    box-shadow: none !important
+    box-shadow: none !important;
 }
 
 html,
@@ -30,23 +30,22 @@ body {
     margin: 0;
     min-height: 100%;
     background: var(--bg);
-    color: var(--ink)
+    color: var(--ink);
 }
 
 body {
     font-size: 19px;
     font-weight: 500;
-    letter-spacing: .01em
 }
 
 ::selection {
     background: var(--acid);
-    color: #000
+    color: #000;
 }
 
 a {
     color: inherit;
-    text-decoration: none
+    text-decoration: none;
 }
 
 button,
@@ -54,38 +53,37 @@ input,
 textarea {
     font-size: inherit;
     font-weight: inherit;
-    letter-spacing: inherit
 }
 
 button {
-    cursor: pointer
+    cursor: pointer;
 }
 
 img {
     display: block;
-    max-width: 100%
+    max-width: 100%;
 }
 
 .hidden {
-    display: none !important
+    display: none !important;
 }
 
 .muted {
-    color: var(--muted)
+    color: var(--muted);
 }
 
 .accent {
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .danger-text {
-    color: var(--red)
+    color: var(--red);
 }
 
 #login-screen {
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 1fr 1fr;
 }
 
 .login-art {
@@ -93,70 +91,67 @@ img {
     flex-direction: column;
     justify-content: space-between;
     padding: 6vw;
-    background: linear-gradient(130deg, #2a4033, #101b15)
+    background: linear-gradient(130deg, #2a4033, #101b15);
 }
 
 .login-art h1 {
     font-size: clamp(90px, 15vw, 225px);
     line-height: .72;
-    letter-spacing: -.055em;
     margin: 0;
-    text-transform: uppercase
+    text-transform: uppercase;
 }
 
 .login-art h1 span {
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .login-art p {
     font-size: 27px;
-    max-width: 420px
+    max-width: 420px;
 }
 
 .login-form-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 40px
+    padding: 60px 40px;
 }
 
 .login-card {
-    width: min(100%, 470px)
+    width: min(100%, 470px);
 }
 
 .brand {
     font-weight: 900;
     font-size: 31px;
-    letter-spacing: -.04em
 }
 
 .brand b {
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .brand-small {
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: .2em;
     font-weight: 900;
-    font-size: 14px
+    font-size: 14px;
 }
 
 .login-card h2 {
     font-size: 80px;
     line-height: .85;
     text-transform: uppercase;
-    margin: 26px 0
+    margin: 26px 0;
 }
 
 .login-card>p {
     color: var(--muted);
-    font-size: 21px
+    font-size: 21px;
 }
 
 .field {
     display: block;
-    margin: 14px 0
+    margin: 14px 0;
 }
 
 .field>span,
@@ -165,9 +160,8 @@ img {
     color: #dfd5e1;
     font-size: 15px;
     font-weight: 800;
-    letter-spacing: .08em;
     text-transform: uppercase;
-    margin-bottom: 7px
+    margin-bottom: 7px;
 }
 
 .control {
@@ -178,24 +172,24 @@ img {
     background: #100f15;
     color: white;
     resize: vertical;
-    border-radius: 0
+    border-radius: 0;
 }
 
 .control::placeholder {
-    color: #7c7384
+    color: #7c7384;
 }
 
 .control.area {
-    min-height: 135px
+    min-height: 135px;
 }
 
 .control:focus,
 .control:focus-visible {
-    border-color: #ffffff2f !important
+    border-color: #ffffff2f !important;
 }
 
 textarea {
-    line-height: 1.3
+    line-height: 1.3;
 }
 
 .primary,
@@ -214,8 +208,7 @@ textarea {
     font-size: 17px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: .08em;
-    transition: filter .15s, transform .15s
+    transition: filter .15s, transform .15s;
 }
 
 .primary:hover,
@@ -223,23 +216,23 @@ textarea {
 .danger:hover,
 .tiny:hover {
     filter: brightness(1.12);
-    transform: translateY(-1px)
+    transform: translateY(-1px);
 }
 
 .primary.full {
-    width: 100%
+    width: 100%;
 }
 
 .secondary {
     background: transparent;
     border-color: #ffffff55;
-    color: white
+    color: white;
 }
 
 .danger {
     background: #5f1b2a;
     color: #ffe7ed;
-    border-color: #c34e6a
+    border-color: #c34e6a;
 }
 
 .tiny {
@@ -247,24 +240,24 @@ textarea {
     font-size: 14px;
     background: #352a3c;
     color: var(--acid);
-    border-color: #ffffff1c
+    border-color: #ffffff1c;
 }
 
 .tiny.red {
-    color: #ffadba
+    color: #ffadba;
 }
 
 .close-btn {
     padding: 8px 12px;
     background: transparent;
     color: var(--muted);
-    font-size: 26px
+    font-size: 26px;
 }
 
 #shell {
     display: grid;
     grid-template-columns: 254px minmax(0, 1fr);
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .sidebar {
@@ -274,29 +267,27 @@ textarea {
     overflow: auto;
     background: var(--sidebar);
     border-right: 1px solid var(--line);
-    padding: 30px 17px
+    padding: 30px 17px;
 }
 
 .sidebar-brand {
     padding: 6px 14px 27px;
-    border-bottom: 1px solid var(--line)
+    border-bottom: 1px solid var(--line);
 }
 
 .sidebar-badge {
     font-size: 11px;
     font-weight: 900;
-    letter-spacing: .15em;
     color: var(--acid);
-    text-transform: uppercase
+    text-transform: uppercase;
 }
 
 .menu-label {
     font-size: 13px;
     color: #80778a;
     text-transform: uppercase;
-    letter-spacing: .17em;
     font-weight: 900;
-    margin: 23px 13px 8px
+    margin: 23px 13px 8px;
 }
 
 .menu-item {
@@ -311,19 +302,19 @@ textarea {
     border: 0;
     background: transparent;
     text-align: left;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .menu-item:hover,
 .menu-item.active {
     background: #342e3b;
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .menu-item .symbol {
     font-size: 22px;
     width: 26px;
-    text-align: center
+    text-align: center;
 }
 
 .sidebar-foot {
@@ -331,12 +322,12 @@ textarea {
     padding: 20px 12px;
     margin-top: 26px;
     font-size: 16px;
-    color: var(--muted)
+    color: var(--muted);
 }
 
 .main {
     padding: 0 42px 65px;
-    min-width: 0
+    min-width: 0;
 }
 
 .topbar {
@@ -345,7 +336,7 @@ textarea {
     gap: 25px;
     justify-content: space-between;
     padding: 24px 0;
-    border-bottom: 1px solid var(--line)
+    border-bottom: 1px solid var(--line);
 }
 
 .topbar .crumb {
@@ -353,13 +344,12 @@ textarea {
     color: var(--muted);
     text-transform: uppercase;
     font-weight: 900;
-    letter-spacing: .15em
 }
 
 .topbar-user {
     display: flex;
     gap: 12px;
-    align-items: center
+    align-items: center;
 }
 
 .role-badge {
@@ -368,12 +358,12 @@ textarea {
     color: var(--acid);
     text-transform: uppercase;
     font-size: 13px;
-    font-weight: 900
+    font-weight: 900;
 }
 
 .topbar-email {
     font-size: 16px;
-    color: var(--muted)
+    color: var(--muted);
 }
 
 .page-title {
@@ -381,14 +371,13 @@ textarea {
     text-transform: uppercase;
     line-height: .9;
     font-weight: 900;
-    letter-spacing: -.03em;
-    margin: 33px 0 14px
+    margin: 33px 0 14px;
 }
 
 .page-subtitle {
     color: var(--muted);
     font-size: 22px;
-    margin: 0 0 28px
+    margin: 0 0 28px;
 }
 
 .title-row {
@@ -397,78 +386,77 @@ textarea {
     justify-content: space-between;
     gap: 15px;
     flex-wrap: wrap;
-    margin-bottom: 28px
+    margin-bottom: 28px;
 }
 
 .title-row .page-subtitle {
-    margin: 0
+    margin: 0;
 }
 
 .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px
+    gap: 16px;
 }
 
 .stat {
     padding: 27px 25px;
     border: 1px solid var(--line);
-    background: var(--panel)
+    background: var(--panel);
 }
 
 .stat span {
     font-size: 16px;
     color: var(--muted);
-    letter-spacing: .08em;
     text-transform: uppercase;
-    font-weight: 900
+    font-weight: 900;
 }
 
 .stat b {
     font-size: 64px;
     display: block;
     color: var(--acid);
-    line-height: 1.1
+    line-height: 1.1;
 }
 
 .stat small {
     font-size: 16px;
-    color: #9e91a7
+    color: #9e91a7;
 }
 
 .panel {
     padding: 25px;
     background: var(--panel);
     border: 1px solid var(--line);
-    margin-top: 22px
+    margin-top: 22px;
 }
 
 .panel h3 {
     font-size: 33px;
     margin: 0 0 16px;
-    text-transform: uppercase
+    text-transform: uppercase;
 }
 
 .panel p {
     font-size: 19px;
-    color: var(--muted)
+    color: var(--muted);
 }
 
 .panel-table {
     overflow: auto;
     border: 1px solid var(--line);
-    background: var(--panel)
+    background: var(--panel);
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
     min-width: 670px;
-    text-align: left
+    text-align: left;
 }
 
 thead {
-    background: #2c2434
+    background: #2c2434;
 }
 
 th {
@@ -476,31 +464,30 @@ th {
     text-transform: uppercase;
     color: var(--acid);
     font-size: 14px;
-    letter-spacing: .1em
 }
 
 td {
     padding: 16px 17px;
     border-top: 1px solid var(--line);
     vertical-align: middle;
-    font-size: 19px
+    font-size: 19px;
 }
 
 td.small {
     font-size: 16px;
-    color: var(--muted)
+    color: var(--muted);
 }
 
 .table-actions {
     display: flex;
     gap: 7px;
-    flex-wrap: wrap
+    flex-wrap: wrap;
 }
 
 .cell-title {
     font-size: 23px;
     font-weight: 800;
-    line-height: 1.1
+    line-height: 1.1;
 }
 
 .pill {
@@ -510,19 +497,18 @@ td.small {
     font-size: 14px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: .05em;
     background: #382b42;
-    color: #d9cce0
+    color: #d9cce0;
 }
 
 .pill.active {
     background: #2f4421;
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .pill.draft {
     background: #413638;
-    color: #e9adb3
+    color: #e9adb3;
 }
 
 .toolbar {
@@ -530,17 +516,17 @@ td.small {
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-    margin-bottom: 20px
+    margin-bottom: 20px;
 }
 
 .toolbar .control {
-    max-width: 390px
+    max-width: 390px;
 }
 
 .simple-list {
     display: flex;
     flex-direction: column;
-    gap: 10px
+    gap: 10px;
 }
 
 .simple-row {
@@ -550,17 +536,17 @@ td.small {
     display: flex;
     justify-content: space-between;
     gap: 15px;
-    align-items: center
+    align-items: center;
 }
 
 .simple-row strong {
-    font-size: 21px
+    font-size: 21px;
 }
 
 .simple-row small {
     display: block;
     color: var(--muted);
-    font-size: 16px
+    font-size: 16px;
 }
 
 .dim-note {
@@ -568,7 +554,7 @@ td.small {
     font-size: 18px;
     padding: 24px;
     background: var(--panel);
-    border-left: 4px solid var(--acid)
+    border-left: 4px solid var(--acid);
 }
 
 #overlay {
@@ -579,11 +565,11 @@ td.small {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 15px
+    padding: 15px;
 }
 
 #overlay.open {
-    display: flex
+    display: flex;
 }
 
 .modal {
@@ -593,7 +579,7 @@ td.small {
     border: 1px solid #55465c;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 30px 110px #000d
+    box-shadow: 0 30px 110px #000d;
 }
 
 .modal-head {
@@ -602,18 +588,18 @@ td.small {
     justify-content: space-between;
     gap: 18px;
     padding: 18px 28px;
-    border-bottom: 1px solid var(--line)
+    border-bottom: 1px solid var(--line);
 }
 
 .modal-head h3 {
     font-size: 35px;
     text-transform: uppercase;
-    margin: 0
+    margin: 0;
 }
 
 .modal-body {
     padding: 20px 28px;
-    overflow-y: auto
+    overflow-y: auto;
 }
 
 .modal-foot {
@@ -622,28 +608,28 @@ td.small {
     justify-content: flex-end;
     gap: 10px;
     flex-wrap: wrap;
-    border-top: 1px solid var(--line)
+    border-top: 1px solid var(--line);
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px 20px
+    gap: 12px 20px;
 }
 
 .form-grid .field.wide {
-    grid-column: 1/-1
+    grid-column: 1/-1;
 }
 
 .media-control {
     display: flex;
     gap: 8px;
-    align-items: center
+    align-items: center;
 }
 
 .media-control .control {
     flex: 1;
-    min-width: 0
+    min-width: 0;
 }
 
 .thumb-preview {
@@ -652,7 +638,7 @@ td.small {
     object-fit: cover;
     background: #32263a;
     margin-top: 10px;
-    border: 1px solid var(--line)
+    border: 1px solid var(--line);
 }
 
 .toggle {
@@ -664,7 +650,7 @@ td.small {
     background: #1e1c22;
     border: 1px solid var(--line);
     user-select: none;
-    min-height: 51px
+    min-height: 51px;
 }
 
 .toggle-indicator {
@@ -672,7 +658,7 @@ td.small {
     height: 25px;
     background: #504257;
     position: relative;
-    border-radius: 15px
+    border-radius: 15px;
 }
 
 .toggle-indicator:after {
@@ -684,25 +670,25 @@ td.small {
     left: 3px;
     border-radius: 50%;
     background: #e8dfe8;
-    transition: .2s
+    transition: .2s;
 }
 
 .toggle[data-on="true"] .toggle-indicator {
-    background: var(--acid)
+    background: var(--acid);
 }
 
 .toggle[data-on="true"] .toggle-indicator:after {
     left: 22px;
-    background: #111
+    background: #111;
 }
 
 .toggle span {
     font-size: 17px;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .select-custom {
-    position: relative
+    position: relative;
 }
 
 .select-trigger {
@@ -715,13 +701,13 @@ td.small {
     justify-content: space-between;
     gap: 8px;
     padding: 10px 13px;
-    color: white
+    color: white;
 }
 
 .select-trigger:after {
     content: '⌄';
     color: var(--acid);
-    font-size: 25px
+    font-size: 25px;
 }
 
 .select-options {
@@ -735,28 +721,28 @@ td.small {
     display: none;
     max-height: 260px;
     overflow: auto;
-    box-shadow: 0 25px 60px #000b
+    box-shadow: 0 25px 60px #000b;
 }
 
 .select-custom.open .select-options {
-    display: block
+    display: block;
 }
 
 .select-option {
     padding: 11px 13px;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .select-option:hover,
 .select-option.selected {
     background: var(--acid);
-    color: #100d15
+    color: #100d15;
 }
 
 .check-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px
+    gap: 8px;
 }
 
 .custom-check {
@@ -766,7 +752,7 @@ td.small {
     padding: 11px;
     background: #15121b;
     border: 1px solid var(--line);
-    cursor: pointer
+    cursor: pointer;
 }
 
 .custom-check .indicator {
@@ -774,21 +760,21 @@ td.small {
     width: 19px;
     border: 1px solid #b1a6bd;
     display: grid;
-    place-items: center
+    place-items: center;
 }
 
 .custom-check.active {
     border-color: var(--acid);
-    color: var(--acid)
+    color: var(--acid);
 }
 
 .custom-check.active .indicator {
     background: var(--acid);
-    color: #101018
+    color: #101018;
 }
 
 .modal-confirm {
-    max-width: 450px
+    max-width: 450px;
 }
 
 .toast {
@@ -802,11 +788,11 @@ td.small {
     min-width: 260px;
     max-width: 430px;
     box-shadow: 0 15px 35px #000b;
-    font-size: 19px
+    font-size: 19px;
 }
 
 .toast.error {
-    border-color: var(--red)
+    border-color: var(--red);
 }
 
 .section-label {
@@ -814,12 +800,12 @@ td.small {
     font-size: 19px;
     margin: 20px 0 10px;
     text-transform: uppercase;
-    font-weight: 900
+    font-weight: 900;
 }
 
 .footnote {
     font-size: 15px;
-    color: var(--muted)
+    color: var(--muted);
 }
 
 @media(max-width:1100px) {
@@ -837,7 +823,7 @@ td.small {
 
     .stats {
         grid-template-columns: repeat(2, 1fr)
-    }
+    };
 }
 
 @media(max-width:720px) {
@@ -927,7 +913,7 @@ td.small {
 
     .toolbar .control {
         max-width: 100%
-    }
+    };
 }
 
 
@@ -936,32 +922,23 @@ td.small {
 .login-art .brand,
 .sidebar .brand {
     font-size: 34px;
-    font-weight: 800
+    font-weight: 800;
 }
 
 .primary {
-    background: var(--acid)
+    background: var(--acid);
 }
 
 .stat {
-    border-radius: 3px
+    border-radius: 3px;
 }
 
 .panel,
 .panel-table {
-    border-radius: 3px
-}
-
-.login-card h2,
-.page-title {
-    letter-spacing: -.025em
+    border-radius: 3px;
 }
 
 .menu-item.active {
     background: #3a4d3d;
-    color: #f5dfb7
-}
-
-.sidebar-badge {
-    letter-spacing: .13em
+    color: #f5dfb7;
 }
